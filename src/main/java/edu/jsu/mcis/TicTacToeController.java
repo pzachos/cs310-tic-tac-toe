@@ -28,8 +28,11 @@ public class TicTacToeController {
         boolean done = false;
 
         while (done == false){
+
             view.showBoard(model.toString());
+
             TicTacToeMove move = view.getNextMove(model.isXTurn());
+
             model.makeMark(move.getRow(), move.getCol());
 
             if (model.isGameover()){
