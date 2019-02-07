@@ -1,9 +1,15 @@
 package edu.jsu.mcis;
 
-public class TicTacToeController {
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 
-    private final TicTacToeModel model;
+public class TicTacToeController implements ActionListener {
+
+    public final TicTacToeModel model;
     private final TicTacToeView view;
+	public boolean done = false;
     
     /* CONSTRUCTOR */
 
@@ -12,42 +18,10 @@ public class TicTacToeController {
         /* Initialize model, view, and width */
 
         model = new TicTacToeModel(width);
-        view = new TicTacToeView();
+        view = new TicTacToeView(this, width);
         
     }
-
-    public void start() {
-    
-        /* MAIN LOOP (repeats until game is over) */
-
-        /* Display the board using the View's "showBoard()", then use
-           "getNextMove()" to get the next move from the player.  Enter
-           the move (using the Model's "makeMark()", or display an error
-           using the View's "showInputError()" if the move is invalid. */
-
-        boolean done = false;
-
-        while (done == false){
-
-            view.showBoard(model.toString());
-
-            TicTacToeMove move = view.getNextMove(model.isXTurn());
-
-            model.makeMark(move.getRow(), move.getCol());
-
-            if (model.isGameover()){
-                done = true;
-            }
-        }
-        
-        /* After the game is over, show the final board and the winner */
-
-        view.showBoard(model.toString());
-
-        view.showResult(model.getResult().toString());
-        
-    }
-
+	
 	public String getMarkAsString(int row, int col) {        
         return (model.getMark(row, col).toString());        
     }
@@ -58,7 +32,20 @@ public class TicTacToeController {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        // INSERT YOUR CODE HERE
+        JButton button = (JButton)event.getSource();
+        String buttonname = button.getName();
+        String buttonstring = buttonname.replaceFirst("Square", "");
+        String[] rowColString = buttonstring.split("");
+        int row = Integer.parseInt(rowColString[0]);
+        int col = Integer.parseInt(rowColString[1]);
+        
+        model.makeMark(row, col);
+        view.updateSquares();
+        if (model.isGameover()){
+            done = true;
+            view.disableSquares();
+            view.showResult(model.getResult().toString());
+        }
     }
 
 

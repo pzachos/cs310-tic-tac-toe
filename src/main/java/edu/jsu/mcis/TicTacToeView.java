@@ -1,6 +1,7 @@
 package edu.jsu.mcis;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class TicTacToeView extends JPanel {
@@ -46,7 +47,13 @@ public class TicTacToeView extends JPanel {
 
         /* Refresh the GUI with updated data from the Model (via the Controller) */
 
-        // INSERT YOUR CODE HERE
+        for (int i = 0; i < controller.model.getWidth(); i++) {
+			for (int j = 0; j < controller.model.getWidth(); j++) {
+				if (!controller.getMarkAsString(i, j).equals("-")){
+                    board[i][j].setText(controller.getMarkAsString(i, j));
+                }
+			}
+		}
 
     }
     
@@ -54,7 +61,11 @@ public class TicTacToeView extends JPanel {
 
         /* Disable buttons (to disallow input after game is over) */
     
-        // INSERT YOUR CODE HERE
+        for (int i = 0; i < controller.model.getWidth(); i++) {
+            for (int j = 0; j < controller.model.getWidth(); j++) {
+                board[i][j].setEnabled(false);
+            }
+        }
             
     }
         
